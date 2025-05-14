@@ -6,8 +6,8 @@ namespace BaoDienTu_ASPNET.Controllers
 {
     public class NewsController : Controller
     {
-        private readonly BaoDienTuDbContext _context;
-        public NewsController(BaoDienTuDbContext context)
+        private readonly AppDbContext _context;
+        public NewsController(AppDbContext context)
         {
             _context = context;
         }

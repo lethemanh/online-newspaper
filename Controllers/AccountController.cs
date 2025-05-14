@@ -8,8 +8,8 @@ namespace BaoDienTu_ASPNET.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly BaoDienTuDbContext _context;
-        public AccountController(BaoDienTuDbContext context)
+        private readonly AppDbContext _context;
+        public AccountController(AppDbContext context)
         {
             _context = context;
         }
