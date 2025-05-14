@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BaoDienTu_ASPNET.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.css" />
 </head>
 <body>
     <header>
@@ -25,12 +26,12 @@
     </li>
     <li class="nav-item">
         <a class="nav-link text-dark" asp-area="" asp-controller="News" asp-action="Create">Đăng bài</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="News" asp-action="MyNews">Bài của tôi</a>
-    </li>
-    @if (Context.Session.GetString("UserRole") == "Admin")
-    {
+                </li>
+                <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="News" asp-action="MyNews">Bài của tôi</a>
+        </li>
+    @if     (Context.Session.GetString("UserRole") == "Admin")
+                {
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="News" asp-action="Pending">Duyệt bài</a>
         </li>
@@ -39,24 +40,24 @@
         <a class="nav-link text-dark" asp-area="" asp-controller="Newsletter" asp-action="Subscribe">Nhận bản tin</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Chuyên mục</a>
-    </li>
-</ul>
-<ul class="navbar-nav">
-    @if (Context.Session.GetInt32("UserId") != null)
-    {
-        <li class="nav-item">
-            <span class="nav-link">Xin chào, @Context.Session.GetString("UserName")!</span>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Đăng xuất</a>
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Đăng nhập</a>
-        </li>
+                    <a class="nav-link text-dark" asp-area="" as-controller="Category" asp-action="Index">Chuyên mục</a>
+                </li>
+  </ul>  
+   <ul class="n avbar-nav">
+        @if (Context.Session.GetInt32("UserId") != null)
+    {    
+          <li   class="nav-item">
+                <span class="nav-link">Xin chào, @Context.Session.GetString("UserName")!</span>
+                   </li>
+                    li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Đăng xuất</a>
+            </li>
+    }    
+      else  
+       { 
+          <li   class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Đăng nhập</a>
+                    </li>
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Đăng ký</a>
         </li>
@@ -81,5 +82,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
