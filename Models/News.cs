@@ -19,6 +19,7 @@ namespace BaoDienTu_ASPNET.Models
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
-        public ICollection<NewsRelation> RelatedNews { get; set; }
+        public ICollection<NewsRelation> RelatedNews { get; set; } = new List<NewsRelation>();
+        public ICollection<NewsComment> Comments { get; set; } = new List<NewsComment>();
     }
 }

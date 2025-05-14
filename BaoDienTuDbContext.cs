@@ -18,7 +18,7 @@ namespace BaoDienTu_ASPNET
         {
             modelBuilder.Entity<NewsRelation>()
                 .HasOne(nr => nr.News)
-                .WithMany()
+                .WithMany(n => n.RelatedNews)
                 .HasForeignKey(nr => nr.NewsId)
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -26,6 +26,18 @@ namespace BaoDienTu_ASPNET
                 .HasOne(nr => nr.RelatedNews)
                 .WithMany()
                 .HasForeignKey(nr => nr.RelatedNewsId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            modelBuilder.Entity<NewsComment>()
+                .HasOne(nc => nc.News)
+                .WithMany(n => n.Comments)
+                .HasForeignKey(nc => nc.NewsId)
+                .OnDelete(DeleteBehavior.Restrict);
+                
+            modelBuilder.Entity<NewsComment>()
+                .HasOne(nc => nc.User)
+                .WithMany()
+                .HasForeignKey(nc => nc.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
