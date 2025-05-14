@@ -1,0 +1,39 @@
+@model IEnumerable<BaoDienTu_ASPNET.Models.News>
+@{
+    ViewData["Title"] = "Pending News";
+}
+<h2>Bài chờ duyệt</h2>
+@if (Model.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tiêu đề</th>
+                <th>Chuyên mục</th>
+                <th>Tác giả</th>
+                <th>Ngày tạo</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var news in Model)
+        {
+            <tr>
+                <td>@news.Title</td>
+                <td>@news.Category?.Name</td>
+                <td>@news.Author?.UserName</td>
+                <td>@news.CreatedAt.ToLocalTime()</td>
+                <td>
+                    <form asp-action="Approve" method="post" asp-route-id="@news.Id" style="display:inline">
+                        <button type="submit" class="btn btn-success btn-sm">Duyệt</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Không có bài chờ duyệt.</p>
+}

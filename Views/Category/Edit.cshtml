@@ -1,0 +1,19 @@
+@model BaoDienTu_ASPNET.Models.Category
+@{
+    ViewData["Title"] = "Edit Category";
+}
+<h2>Sửa chuyên mục</h2>
+<form asp-action="Edit" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <div class="mb-3">
+        <label for="name" class="form-label">Tên chuyên mục</label>
+        <input type="text" class="form-control" id="name" name="name" value="@Model.Name" required />
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Mô tả</label>
+        <input type="text" class="form-control" id="description" name="description" value="@Model.Description" />
+    </div>
+    <div class="mb-3 text-danger">@ViewBag.Error</div>
+    <button type="submit" class="btn btn-success">Lưu</button>
+    <a href="@Url.Action("Index", "Category")" class="btn btn-secondary">Huỷ</a>
+</form>

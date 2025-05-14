@@ -4,3 +4,19 @@ obj/
 *.suo
 *.userosscache
 *.sln.docstates
+# SQLite database files
+*.db
+*.db-shm
+*.db-wal
+# Visual Studio Code
+.vscode/
+# Rider
+.idea/
+# User secrets
+secrets.json
+# Publish output
+publish/
+# Logs
+*.log
+# ASP.NET generated files
+wwwroot/lib/

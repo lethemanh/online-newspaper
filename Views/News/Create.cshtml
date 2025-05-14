@@ -1,0 +1,27 @@
+@using BaoDienTu_ASPNET.Models;
+@{
+    ViewData["Title"] = "Create News";
+    var categories = ViewBag.Categories as List<Category> ?? new List<Category>();
+}
+<h2>Đăng bài mới</h2>
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label for="title" class="form-label">Tiêu đề</label>
+        <input type="text" class="form-control" id="title" name="title" required />
+    </div>
+    <div class="mb-3">
+        <label for="content" class="form-label">Nội dung</label>
+        <textarea class="form-control" id="content" name="content" rows="8" required></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="categoryId" class="form-label">Chuyên mục</label>
+        <select id="categoryId" name="categoryId" class="form-select" required>
+            <option value="">-- Chọn chuyên mục --</option>
+            @foreach (var cat in categories)
+            {
+                <option value="@cat.Id">@cat.Name</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success">Đăng bài</button>
+</form>

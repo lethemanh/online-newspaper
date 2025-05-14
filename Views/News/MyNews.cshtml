@@ -1,0 +1,34 @@
+@model IEnumerable<BaoDienTu_ASPNET.Models.News>
+@{
+    ViewData["Title"] = "My News";
+}
+<h2>Bài của tôi</h2>
+<a href="@Url.Action("Create", "News")" class="btn btn-primary mb-3">Đăng bài mới</a>
+@if (Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Tiêu đề</th>
+                <th>Chuyên mục</th>
+                <th>Trạng thái</th>
+                <th>Ngày tạo</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var news in Model)
+        {
+            <tr>
+                <td>@news.Title</td>
+                <td>@news.Category?.Name</td>
+                <td>@(news.IsApproved ? "Đã duyệt" : "Chờ duyệt")</td>
+                <td>@news.CreatedAt.ToLocalTime()</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Bạn chưa đăng bài nào.</p>
+}

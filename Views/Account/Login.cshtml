@@ -1,0 +1,17 @@
+@{
+    ViewData["Title"] = "Đăng nhập";
+}
+<h2>Đăng nhập</h2>
+<form asp-action="Login" method="post">
+    <div class="mb-3">
+        <label for="email" class="form-label">Địa chỉ email</label>
+        <input type="email" class="form-control" id="email" name="email" required />
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Mật khẩu</label>
+        <input type="password" class="form-control" id="password" name="password" required />
+    </div>
+    <div class="mb-3 text-danger"><span class="text-danger">@ViewBag.Error</span></div>
+    <button type="submit" class="btn btn-primary">Đăng nhập</button>
+</form>
+<p>Chưa có tài khoản? <a href="/Account/Register">Đăng ký tại đây</a>.</p>

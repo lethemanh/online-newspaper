@@ -1,0 +1,41 @@
+@model IEnumerable<BaoDienTu_ASPNET.Models.Category>
+@{
+    ViewData["Title"] = "Categories";
+}
+<h2>Chuyên mục</h2>
+@if (TempData["DeleteError"] != null)
+{
+    <div class="alert alert-danger">@TempData["DeleteError"]</div>
+}
+<a href="@Url.Action("Create", "Category")" class="btn btn-primary mb-3">Thêm chuyên mục</a>
+@if (Model.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tên chuyên mục</th>
+                <th>Mô tả</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var cat in Model)
+        {
+            <tr>
+                <td>@cat.Name</td>
+                <td>@cat.Description</td>
+                <td>
+                    <a href="@Url.Action("Edit", "Category", new { id = cat.Id })" class="btn btn-sm btn-warning">Sửa</a>
+                    <form asp-action="Delete" asp-route-id="@cat.Id" method="post" style="display:inline" onsubmit="return confirm('Are you sure?');">
+                        <button type="submit" class="btn btn-sm btn-danger">Xoá</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Chưa có chuyên mục nào.</p>
+}

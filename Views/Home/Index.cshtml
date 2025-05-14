@@ -1,8 +1,17 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Báo Điện Tử";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-md-7">
+            <h1 class="display-4 mb-3 text-primary">Chào mừng đến với Báo Điện Tử!</h1>
+            <p class="lead mb-4">Báo Điện Tử – Nơi cập nhật tin tức nhanh chóng, chính xác và đa chiều. Chúng tôi mang đến cho bạn trải nghiệm đọc báo hiện đại, tương tác và cá nhân hóa, đồng thời là cầu nối giữa cộng đồng và dòng chảy thời sự mỗi ngày.</p>
+            <p class="mb-4">Khám phá những câu chuyện nổi bật, phân tích chuyên sâu, góc nhìn đa dạng và không bỏ lỡ bất kỳ diễn biến nóng nào trong nước cũng như quốc tế. Hãy đồng hành cùng chúng tôi để luôn là người đầu tiên nắm bắt thông tin!</p>
+            <a href="/Account/Register" class="btn btn-success btn-lg me-2">Đăng ký ngay</a>
+            <a href="/News/Index" class="btn btn-outline-primary btn-lg">Xem tin tức</a>
+        </div>
+        <div class="col-md-5 d-none d-md-block">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" class="img-fluid rounded shadow" alt="Đọc báo điện tử">
+        </div>
+    </div>
 </div>

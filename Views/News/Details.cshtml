@@ -1,0 +1,14 @@
+@model BaoDienTu_ASPNET.Models.News
+@{
+    ViewData["Title"] = Model.Title;
+}
+<div class="container">
+    <h2>@Model.Title</h2>
+    <div class="mb-2"><span class="badge bg-secondary">@Model.Category?.Name</span> | <span class="badge bg-info">By @Model.Author?.UserName</span></div>
+    <div class="mb-3 text-muted">Đăng lúc @Model.CreatedAt.ToLocalTime()</div>
+    <div class="mb-4">@Html.Raw(Model.Content)</div>
+    <a href="javascript:window.print()" class="btn btn-outline-secondary">In bài viết</a>
+    <a href="mailto:?subject=@Model.Title&amp;body=@Url.Action("Details", "News", new {id = Model.Id}, Context.Request.Scheme)" class="btn btn-outline-primary">Gửi cho bạn bè</a>
+    <hr />
+    <!-- TODO: Bình luận, tin liên quan -->
+</div>
