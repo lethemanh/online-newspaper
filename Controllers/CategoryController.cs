@@ -6,8 +6,8 @@ namespace BaoDienTu_ASPNET.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly BaoDienTuDbContext _context;
-        public CategoryController(BaoDienTuDbContext context)
+        private readonly AppDbContext _context;
+        public CategoryController(AppDbContext context)
         {
             _context = context;
         }

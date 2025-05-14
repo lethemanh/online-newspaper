@@ -8,47 +8,55 @@ Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
 // Read DB provider and connection string from env
-var dbProvider = Environment.GetEnvironmentVariable("DB_PROVIDER") ?? "SqlServer";
+var config = builder.Configuration;
+var dbProvider = config["DB_PROVIDER"] ?? "SqlServer";
 string? connStr = null;
 if (dbProvider == "Sqlite")
-    connStr = Environment.GetEnvironmentVariable("SQLITE_CONNECTION_STRING") ?? "Data Source=BaoDienTu.db";
+  connStr = config.GetConnectionString("Sqlite") ?? "Data Source=BaoDienTu.db";
 else
-    connStr = Environment.GetEnvironmentVariable("SQLSERVER_CONNECTION_STRING") ?? "Server=localhost;Database=BaoDienTu;User Id=sa;Password=YourStrong!Passw0rd;";
+  connStr = config.GetConnectionString("SqlServer") ?? "Server=localhost;Database=BaoDienTu;User Id=sa;Password=YourStrong!Passw0rd;";
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
-builder.Services.AddDbContext<BaoDienTuDbContext>(options =>
+if (dbProvider.ToUpper() == "SQLITE")
 {
-    if (dbProvider == "Sqlite")
-        options.UseSqlite(connStr);
-    else
-        options.UseSqlServer(connStr);
-});
+  builder.Services.AddDbContext<SqliteDbContext>(options =>
+      options.UseSqlite(connStr));
+  builder.Services.AddScoped<AppDbContext>(sp => sp.GetRequiredService<SqliteDbContext>());
+}
+else
+{
+  builder.Services.AddDbContext<SqlServerDbContext>(options =>
+      options.UseSqlServer(connStr));
+  builder.Services.AddScoped<AppDbContext>(sp => sp.GetRequiredService<SqlServerDbContext>());
+}
+// To use: inject AppDbContext in controllers/services
 
 // Set ASP.NET Core port from env
 var aspnetUrls = Environment.GetEnvironmentVariable("ASPNETCORE_URLS");
 if (!string.IsNullOrEmpty(aspnetUrls))
-    builder.WebHost.UseUrls(aspnetUrls);
+  builder.WebHost.UseUrls(aspnetUrls);
 
 var app = builder.Build();
 
-// Auto-create admin account if not exists
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<BaoDienTuDbContext>();
-    if (!db.Users.Any(u => u.Role == "Admin"))
+  var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+  // Tạo tài khoản admin nếu chưa có
+  if (!db.Users.Any(u => u.Role == "Admin"))
+  {
+    var admin = new BaoDienTu_ASPNET.Models.User
     {
-        var admin = new BaoDienTu_ASPNET.Models.User
-        {
-            UserName = "admin",
-            Email = "admin@localhost",
-            PasswordHash = BaoDienTu_ASPNET.Controllers.AccountController.HashPassword("123456"),
-            Role = "Admin"
-        };
-        db.Users.Add(admin);
-        db.SaveChanges();
-    }
+      UserName = "admin",
+      Email = "admin@localhost",
+      PasswordHash = BaoDienTu_ASPNET.Controllers.AccountController.HashPassword("123456"),
+      Role = "Admin"
+    };
+    db.Users.Add(admin);
+    db.SaveChanges();
+  }
 }
 
 
