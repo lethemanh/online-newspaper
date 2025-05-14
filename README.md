@@ -30,8 +30,8 @@ A modern web platform for managing and reading news articles, built with ASP.NET
 
 1. **Clone the repository:**
    ```bash
-   git clone <repository-url>
-   cd BaoDienTu_ASPNET
+   git clone https://github.com/lethemanh/online-newspaper.git
+   cd online-newspaper
    ```
 
 2. **Install all project dependencies:**
