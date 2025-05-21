@@ -1,13 +1,35 @@
 @{
     ViewData["Title"] = "Subscribe Newsletter";
 }
-<h2>Đăng ký nhận bản tin</h2>
-<form asp-action="Subscribe" method="post">
-    <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" name="email" required />
+
+<div class="container py-5 d-flex justify-content-center">
+    <div class="card shadow-sm p-5 rounded-4" style="max-width: 500px; width: 100%;">
+        <h2 class="text-center text-primary fw-bold mb-4">📬 Đăng ký nhận bản tin</h2>
+
+        <form asp-action="Subscribe" method="post" novalidate>
+            <div class="mb-3">
+                <label for="email" class="form-label fw-semibold">Email của bạn</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-envelope-fill"></i></span>
+                    <input type="email" class="form-control border-start-0" id="email" name="email" placeholder="example@gmail.com" required />
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(ViewBag.Error as string))
+            {
+                <div class="alert alert-danger text-center rounded-pill py-2">@ViewBag.Error</div>
+            }
+
+            @if (!string.IsNullOrEmpty(ViewBag.Success as string))
+            {
+                <div class="alert alert-success text-center rounded-pill py-2">@ViewBag.Success</div>
+            }
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary rounded-pill fw-semibold">
+                    ✅ Đăng ký ngay
+                </button>
+            </div>
+        </form>
     </div>
-    <div class="mb-3 text-danger">@ViewBag.Error</div>
-    <div class="mb-3 text-success">@ViewBag.Success</div>
-    <button type="submit" class="btn btn-primary">Đăng ký</button>
-</form>
+</div>

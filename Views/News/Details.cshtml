@@ -2,13 +2,49 @@
 @{
     ViewData["Title"] = Model.Title;
 }
-<div class="container">
-    <h2>@Model.Title</h2>
-    <div class="mb-2"><span class="badge bg-secondary">@Model.Category?.Name</span> | <span class="badge bg-info">By @Model.Author?.UserName</span></div>
-    <div class="mb-3 text-muted">Đăng lúc @Model.CreatedAt.ToLocalTime()</div>
-    <div class="mb-4">@Html.Raw(Model.Content)</div>
-    <a href="javascript:window.print()" class="btn btn-outline-secondary">In bài viết</a>
-    <a href="mailto:?subject=@Model.Title&amp;body=@Url.Action("Details", "News", new {id = Model.Id}, Context.Request.Scheme)" class="btn btn-outline-primary">Gửi cho bạn bè</a>
-    <hr />
-    <!-- TODO: Bình luận, tin liên quan -->
+
+<div class="container py-4">
+    <div class="card shadow-sm rounded-4 p-4 border-0">
+        <h2 class="fw-bold text-primary mb-3">@Model.Title</h2>
+
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+            @if (!string.IsNullOrEmpty(Model.Category?.Name))
+            {
+                <span class="badge bg-secondary">
+                    <i class="bi bi-folder-fill me-1"></i> @Model.Category.Name
+                </span>
+            }
+            @if (!string.IsNullOrEmpty(Model.Author?.UserName))
+            {
+                <span class="badge bg-info text-dark">
+                    <i class="bi bi-person-fill me-1"></i> @Model.Author.UserName
+                </span>
+            }
+        </div>
+
+        <div class="text-muted mb-4">
+            <i class="bi bi-clock me-1"></i> Đăng lúc @Model.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
+        </div>
+
+        <div class="mb-4 fs-5" style="line-height: 1.8;">
+            @Html.Raw(Model.Content)
+        </div>
+
+        <div class="d-flex flex-wrap gap-3">
+            <a href="javascript:window.print()" class="btn btn-outline-secondary rounded-pill px-4">
+                🖨️ In bài viết
+            </a>
+            <a href="mailto:?subject=@Model.Title&amp;body=@Url.Action("Details", "News", new { id = Model.Id }, Context.Request.Scheme)"
+               class="btn btn-outline-primary rounded-pill px-4">
+                📩 Gửi cho bạn bè
+            </a>
+        </div>
+
+        <hr class="my-5" />
+
+        <!-- TODO: Phần bình luận, tin liên quan -->
+        <div class="text-muted">
+            <em>💬 Tính năng bình luận và bài viết liên quan đang được phát triển...</em>
+        </div>
+    </div>
 </div>
