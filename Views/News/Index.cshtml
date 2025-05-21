@@ -2,21 +2,45 @@
 @{
     ViewData["Title"] = "Danh sách bài viết";
 }
-<h2>Tin mới nhất</h2>
+
+<h2 class="mb-3 text-center display-6 fw-bold text-primary">📰 Tin Mới Nhất</h2>
+
+<div class="d-flex justify-content-end mb-4">
+    <a href="@Url.Action("Create", "News")" class="btn btn-success rounded-pill px-4">
+        ➕ Đăng bài
+    </a>
+</div>
+
 @if (Model.Any())
 {
-    <div class="row">
+    <div class="row g-4">
         @foreach (var news in Model)
         {
-            <div class="col-md-6 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">@news.Title</h5>
-                        <p class="card-text">@news.Content.Substring(0, Math.Min(100, news.Content.Length))...</p>
-                        <a href="@Url.Action("Details", "News", new { id = news.Id })" class="btn btn-primary">Xem chi tiết</a>
-                        <a href="@Url.Action("Create", "News")" class="btn btn-primary mb-3">Đăng bài mới</a>
-                        <span class="badge bg-secondary">@news.Category?.Name</span>
-                        <span class="badge bg-info">Tác giả: @news.Author?.UserName</span>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border border-primary border-2 shadow-sm rounded-4 overflow-hidden">
+                    <div class="card-body d-flex flex-column p-4">
+                        <h5 class="card-title text-dark fw-semibold mb-2">@news.Title</h5>
+
+                        <p class="card-text text-muted small mb-3">
+                            @news.Content.Substring(0, Math.Min(120, news.Content.Length))...
+                        </p>
+
+                        <div class="d-flex flex-wrap gap-2 mb-3">
+                            @if (!string.IsNullOrEmpty(news.Category?.Name))
+                            {
+                                <span class="badge bg-secondary">@news.Category.Name</span>
+                            }
+                            @if (!string.IsNullOrEmpty(news.Author?.UserName))
+                            {
+                                <span class="badge bg-info text-dark">✍️ @news.Author.UserName</span>
+                            }
+                        </div>
+
+                        <div class="mt-auto text-end">
+                            <a href="@Url.Action("Details", "News", new { id = news.Id })" class="btn btn-sm btn-primary rounded-pill px-3">
+                                Xem chi tiết
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -25,5 +49,7 @@
 }
 else
 {
-    <p>Chưa có bài viết nào.</p>
+    <div class="alert alert-warning text-center fs-5">
+        📭 Chưa có bài viết nào được đăng.
+    </div>
 }
