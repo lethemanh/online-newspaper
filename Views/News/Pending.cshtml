@@ -2,6 +2,13 @@
 @{
     ViewData["Title"] = "Pending News";
 }
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 <h2>Bài chờ duyệt</h2>
 @if (Model.Any())
 {
@@ -37,3 +44,15 @@ else
 {
     <p>Không có bài chờ duyệt.</p>
 }
+<script>
+    // Tự động ẩn thông báo sau 3 giây
+    document.addEventListener('DOMContentLoaded', function() {
+        var alert = document.getElementById('successAlert');
+        if (alert) {
+            setTimeout(function() {
+                var bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            }, 3000);
+        }
+    });
+</script>

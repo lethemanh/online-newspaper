@@ -32,17 +32,34 @@ namespace BaoDienTu_ASPNET.Controllers
         }
 
         // Đăng tin (user)
-        public IActionResult Create()
+        // public IActionResult Create()
+        // {
+        //     if (HttpContext.Session.GetInt32("UserId") == null)
+        //         return RedirectToAction("Login", "Account");
+        //     ViewBag.Categories = _context.Categories.ToList();
+        //     return View();
+        // }
+        public async Task<IActionResult> Create(int? id)
         {
             if (HttpContext.Session.GetInt32("UserId") == null)
                 return RedirectToAction("Login", "Account");
+
             ViewBag.Categories = _context.Categories.ToList();
+
+            if (id > 0)
+            {
+                var news = await _context.News.FindAsync(id);
+                if (news == null) return NotFound();
+                return View(news);
+            }
+
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(string title, string content, int categoryId)
         {
+            ViewBag.Categories = _context.Categories.ToList();
             var userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null)
                 return RedirectToAction("Login", "Account");
@@ -55,10 +72,36 @@ namespace BaoDienTu_ASPNET.Controllers
                 IsApproved = false,
                 CreatedAt = DateTime.UtcNow
             };
+            if (await _context.News.AnyAsync(n => n.Title.ToLower() == title.ToLower() && n.CategoryId == categoryId))
+            {
+                ViewBag.Error = "Tiêu đề đã tồn tại.";
+                return View(news);
+            }
             _context.News.Add(news);
             await _context.SaveChangesAsync();
+            TempData["Success"] = "Thêm bài viết thành công!";
             return RedirectToAction("MyNews");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, string title, string content, int categoryId)
+        {
+            ViewBag.Categories = _context.Categories.ToList();
+            var news = await _context.News.FindAsync(id);
+            if (news == null) return NotFound();
+            news.Title = title;
+            news.Content = content;
+            news.CategoryId = categoryId;
+            if (await _context.News.AnyAsync(n => n.Title.ToLower() == title.ToLower() && n.Id != id && n.CategoryId == categoryId))
+            {
+                ViewBag.Error = "Tiêu đề đã tồn tại.";
+                return View("Create", news);
+            }
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "Cập nhật bài viết thành công!";
+            return RedirectToAction("MyNews");
+        }
+
 
         // Danh sách tin của user
         public async Task<IActionResult> MyNews()
@@ -96,7 +139,19 @@ namespace BaoDienTu_ASPNET.Controllers
             news.IsApproved = true;
             news.ApprovedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
+            TempData["Success"] = "Duyệt bài thành công!";
             return RedirectToAction("Pending");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var news = await _context.News.FindAsync(id);
+            if (news == null) return NotFound();
+            _context.News.Remove(news);
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "Xóa bài viết thành công!";
+            return RedirectToAction("MyNews");
         }
     }
 }

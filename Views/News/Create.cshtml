@@ -1,27 +1,41 @@
 @using BaoDienTu_ASPNET.Models;
+@model News
 @{
-    ViewData["Title"] = "Create News";
+    ViewData["Title"] = Model?.Id > 0 ? "Sửa tin" : "Đăng tin mới";
     var categories = ViewBag.Categories as List<Category> ?? new List<Category>();
 }
-<h2>Đăng bài mới</h2>
-<form asp-action="Create" method="post">
+<h2>@ViewData["Title"]</h2>
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+<form asp-action="@(Model?.Id > 0 ? "Edit" : "Create")" method="post">
+    @if (Model?.Id > 0)
+    {
+        <input type="hidden" name="id" value="@Model.Id" />
+    }
     <div class="mb-3">
-        <label for="title" class="form-label">Tiêu đề</label>
-        <input type="text" class="form-control" id="title" name="title" required />
+        <label for="title" class="form-label">Tiêu đề <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" id="title" name="title" required 
+               value="@(Model?.Title ?? "")" />
     </div>
     <div class="mb-3">
-        <label for="content" class="form-label">Nội dung</label>
-        <textarea class="form-control" id="content" name="content" rows="8" required></textarea>
+        <label for="content" class="form-label">Nội dung  <span class="text-danger">*</span></label>
+        <textarea class="form-control" id="content" name="content" rows="8" required>@(Model?.Content ?? "")</textarea>
     </div>
     <div class="mb-3">
-        <label for="categoryId" class="form-label">Chuyên mục</label>
+        <label for="categoryId" class="form-label">Chuyên mục <span class="text-danger">*</span></label>
         <select id="categoryId" name="categoryId" class="form-select" required>
             <option value="">-- Chọn chuyên mục --</option>
             @foreach (var cat in categories)
             {
-                <option value="@cat.Id">@cat.Name</option>
+                <option value="@cat.Id" selected="@(Model?.CategoryId == cat.Id)">@cat.Name</option>
             }
         </select>
     </div>
-    <button type="submit" class="btn btn-success">Đăng bài</button>
+    <button type="submit" class="btn btn-success">@(Model?.Id > 0 ? "Cập nhật" : "Đăng bài")</button>
+    @if (Model?.Id > 0)
+    {
+        <a href="@Url.Action("MyNews")" class="btn btn-secondary">Hủy</a>
+    }
 </form>
