@@ -2,6 +2,13 @@
 @{
     ViewData["Title"] = "My News";
 }
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 <h2>Bài của tôi</h2>
 <a href="@Url.Action("Create", "News")" class="btn btn-primary mb-3">Đăng bài mới</a>
 @if (Model.Any())
@@ -13,6 +20,7 @@
                 <th>Chuyên mục</th>
                 <th>Trạng thái</th>
                 <th>Ngày tạo</th>
+                <th>Thao tác</th>
             </tr>
         </thead>
         <tbody>
@@ -23,6 +31,14 @@
                 <td>@news.Category?.Name</td>
                 <td>@(news.IsApproved ? "Đã duyệt" : "Chờ duyệt")</td>
                 <td>@news.CreatedAt.ToLocalTime()</td>
+                <td>
+                @if(!news.IsApproved) {
+                    <a href="@Url.Action("Create", "News", new { id = news.Id })" class="btn btn-sm btn-warning">Sửa</a>
+                    <form asp-action="Delete" asp-route-id="@news.Id" method="post" style="display:inline" onsubmit="return confirm('Are you sure?');">
+                        <button type="submit" class="btn btn-sm btn-danger">Xoá</button>
+                    </form>
+                }
+                </td>
             </tr>
         }
         </tbody>
@@ -32,3 +48,15 @@ else
 {
     <p>Bạn chưa đăng bài nào.</p>
 }
+<script>
+    // Tự động ẩn thông báo sau 3 giây
+    document.addEventListener('DOMContentLoaded', function() {
+        var alert = document.getElementById('successAlert');
+        if (alert) {
+            setTimeout(function() {
+                var bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            }, 3000);
+        }
+    });
+</script>
